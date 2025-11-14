@@ -1,6 +1,6 @@
-# AI-Powered Predictive Searches Implementation Guide
+# Machine Learning-Powered Predictive Searches Implementation Guide
 
-This guide explains how AI-powered predictive searches were added to the recycling contamination tracking system and how to replicate this functionality in other projects.
+This guide explains how machine learning-powered predictive searches were added to the recycling contamination tracking system and how to replicate this functionality in other projects.
 
 ## Table of Contents
 
@@ -14,7 +14,9 @@ This guide explains how AI-powered predictive searches were added to the recycli
 
 ## Overview
 
-The AI functionality analyzes historical data patterns to generate intelligent, actionable search suggestions. Instead of requiring users to know what to search for, the system proactively suggests relevant queries based on:
+**Note on Terminology**: This implementation uses **machine learning** (statistical analysis, pattern recognition, trend detection) rather than traditional AI/LLM approaches. It analyzes historical data patterns using algorithms to generate intelligent, actionable search suggestions. For true AI/LLM features (like natural language generation), see the [Future Enhancements](#future-enhancements) section.
+
+The machine learning functionality analyzes historical data patterns to generate intelligent, actionable search suggestions. Instead of requiring users to know what to search for, the system proactively suggests relevant queries based on:
 
 - **Trend Analysis**: Identifies increasing/decreasing patterns
 - **Anomaly Detection**: Finds outliers and concerning patterns
@@ -23,7 +25,7 @@ The AI functionality analyzes historical data patterns to generate intelligent, 
 
 ### Key Features
 
-- **Zero External Dependencies**: Uses pattern analysis algorithms (no external AI APIs required)
+- **Zero External Dependencies**: Uses pattern analysis algorithms (no external ML/AI APIs required)
 - **Real-time Analysis**: Generates suggestions based on current data
 - **Confidence Scoring**: Each suggestion includes a confidence level
 - **Actionable Insights**: Provides context and recommendations
@@ -75,7 +77,7 @@ The implementation follows Clean Architecture principles:
 
 **File**: `backend/src/application/services/TrendAnalysisService.ts`
 
-This service contains the core AI logic. It analyzes data patterns and generates predictive searches.
+This service contains the core machine learning logic. It analyzes data patterns and generates predictive searches.
 
 ```typescript
 export interface PredictiveSearch {
@@ -84,7 +86,7 @@ export interface PredictiveSearch {
   queryType: 'route' | 'category' | 'severity' | 'trend' | 'customer';
   queryParams: Record<string, any>;
   confidence: number; // 0-1
-  insight: string; // AI-generated insight
+  insight: string; // ML-generated insight
 }
 
 export class TrendAnalysisService {
@@ -305,7 +307,7 @@ This formula:
 
 ### Generating Insights
 
-Each search includes an AI-generated insight:
+Each search includes a machine learning-generated insight:
 
 ```typescript
 insight: `Route ${trend.routeCode} shows a concerning upward trend. 
@@ -579,9 +581,9 @@ async analyzeMultiFactorTrends() {
 
 ## Future Enhancements
 
-### 1. External AI APIs
+### 1. External AI/LLM APIs
 
-Integrate with OpenAI, Anthropic, or other AI services:
+Integrate with OpenAI, Anthropic, or other AI/LLM services for natural language insights:
 
 ```typescript
 import OpenAI from 'openai';
@@ -674,7 +676,7 @@ async generateSearchesWithVariant(variant: string): Promise<PredictiveSearch[]> 
 
 ## Conclusion
 
-This implementation provides a foundation for AI-powered predictive searches that can be adapted to any domain. The key is understanding your data patterns and creating analysis methods that generate actionable insights.
+This implementation provides a foundation for machine learning-powered predictive searches that can be adapted to any domain. The key is understanding your data patterns and creating analysis methods that generate actionable insights.
 
 Remember:
 - Start simple and iterate

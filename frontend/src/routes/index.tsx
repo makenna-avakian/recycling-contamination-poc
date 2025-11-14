@@ -74,7 +74,7 @@ function Dashboard() {
         <p className="mt-2 text-gray-600">Overview of recycling contamination data</p>
       </div>
 
-      {/* AI-Powered Predictive Searches */}
+      {/* ML-Powered Predictive Searches */}
       <PredictiveSearches />
 
       {/* Stats Cards */}

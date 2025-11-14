@@ -3,8 +3,9 @@ import { IRouteRepository } from '../../domain/repositories/IRouteRepository';
 import { getDatabasePool } from '../../infrastructure/database/connection';
 
 /**
- * AI-Powered Trend Analysis Service
- * Analyzes contamination data patterns and generates predictive search suggestions
+ * Machine Learning-Powered Trend Analysis Service
+ * Analyzes contamination data patterns using statistical analysis and pattern recognition
+ * to generate predictive search suggestions
  */
 export interface PredictiveSearch {
   title: string;
@@ -12,7 +13,7 @@ export interface PredictiveSearch {
   queryType: 'route' | 'category' | 'severity' | 'trend' | 'customer';
   queryParams: Record<string, any>;
   confidence: number; // 0-1, how confident we are this is useful
-  insight: string; // AI-generated insight
+  insight: string; // ML-generated insight based on pattern analysis
 }
 
 export class TrendAnalysisService {

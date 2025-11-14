@@ -41,7 +41,7 @@ export const getWorstOffendingCustomers = new GetWorstOffendingCustomers(
 );
 
 /**
- * Application Layer: AI Services
+ * Application Layer: Machine Learning Services
  */
 export const trendAnalysisService = new TrendAnalysisService(
   contaminationRepository,

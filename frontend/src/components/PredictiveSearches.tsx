@@ -26,7 +26,7 @@ export function PredictiveSearches() {
   if (isLoading) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">🤖 AI-Powered Insights</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">🤖 Powered Insights</h2>
         <div className="animate-pulse space-y-3">
           <div className="h-16 bg-gray-200 rounded"></div>
           <div className="h-16 bg-gray-200 rounded"></div>
@@ -44,10 +44,10 @@ export function PredictiveSearches() {
     <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg shadow-lg p-6 border border-purple-200">
       <div className="flex items-center mb-4">
         <div className="text-2xl mr-2">🤖</div>
-        <h2 className="text-xl font-semibold text-gray-900">AI-Powered Insights</h2>
+        <h2 className="text-xl font-semibold text-gray-900">Powered Insights</h2>
       </div>
       <p className="text-sm text-gray-600 mb-4">
-        Based on recent trends, here are some searches that might be helpful:
+        Based on an analysis of recent trends, here are some searches that might be helpful:
       </p>
       
       <div className="space-y-3">

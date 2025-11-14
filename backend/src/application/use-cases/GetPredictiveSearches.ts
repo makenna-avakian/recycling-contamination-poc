@@ -2,7 +2,7 @@ import { TrendAnalysisService, PredictiveSearch } from '../services/TrendAnalysi
 
 /**
  * Use Case: Get Predictive Searches
- * Returns AI-generated search suggestions based on data trends
+ * Returns machine learning-generated search suggestions based on data trends
  */
 export class GetPredictiveSearches {
   constructor(

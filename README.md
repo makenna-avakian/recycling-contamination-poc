@@ -2,7 +2,7 @@
 
 A full-stack application for tracking recycling pickups and contamination in NYC. Staff can log contamination events, analyze trends, and measure the effectiveness of education/outreach efforts.
 
-> **🤖 AI Features**: This project includes AI-powered predictive searches that analyze trends and suggest actionable insights. See [AI_IMPLEMENTATION_GUIDE.md](./AI_IMPLEMENTATION_GUIDE.md) for a detailed explanation of how the AI functionality was implemented and how to replicate it in other projects.
+> **🤖 ML Features**: This project includes **machine learning-powered** predictive searches that use statistical analysis and pattern recognition to suggest actionable insights. See [AI_IMPLEMENTATION_GUIDE.md](./Docs/ML_Integrations/AI_IMPLEMENTATION_GUIDE.md) for a detailed explanation of how the ML functionality was implemented and how to replicate it (or add true AI/LLM features) in other projects.
 
 ## 🎯 Project Goals
 
