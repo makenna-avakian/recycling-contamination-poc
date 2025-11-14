@@ -16,6 +16,8 @@ import { RouteRepository } from '../database/repositories/RouteRepository';
 import { GetContaminationByRoute } from '../../application/use-cases/GetContaminationByRoute';
 import { GetContaminationOverTime } from '../../application/use-cases/GetContaminationOverTime';
 import { GetWorstOffendingCustomers } from '../../application/use-cases/GetWorstOffendingCustomers';
+import { GetPredictiveSearches } from '../../application/use-cases/GetPredictiveSearches';
+import { TrendAnalysisService } from '../../application/services/TrendAnalysisService';
 
 import { ContaminationController } from '../../presentation/controllers/ContaminationController';
 
@@ -39,10 +41,20 @@ export const getWorstOffendingCustomers = new GetWorstOffendingCustomers(
 );
 
 /**
+ * Application Layer: Machine Learning Services
+ */
+export const trendAnalysisService = new TrendAnalysisService(
+  contaminationRepository,
+  routeRepository
+);
+export const getPredictiveSearches = new GetPredictiveSearches(trendAnalysisService);
+
+/**
  * Presentation Layer: Controllers
  */
 export const contaminationController = new ContaminationController(
   getContaminationByRoute,
-  getContaminationOverTime
+  getContaminationOverTime,
+  getPredictiveSearches
 );
 
