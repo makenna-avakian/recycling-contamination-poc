@@ -101,9 +101,9 @@ export class ContaminationRepository implements IContaminationRepository {
         ce.created_at
       FROM contamination_events ce
       INNER JOIN pickups p ON ce.pickup_id = p.pickup_id
-      WHERE p.pickup_time >= $1 AND p.pickup_time <= $2
+      WHERE p.pickup_time >= $1::timestamptz AND p.pickup_time <= $2::timestamptz
       ORDER BY p.pickup_time ASC
-    `, [startDate, endDate]);
+    `, [startDate.toISOString(), endDate.toISOString()]);
 
     return result.rows.map(row => new ContaminationEvent(
       row.contamination_id,

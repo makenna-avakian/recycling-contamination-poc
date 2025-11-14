@@ -47,7 +47,12 @@ export class ContaminationController {
       res.json(contamination);
     } catch (error) {
       console.error('Error getting contamination over time:', error);
-      res.status(500).json({ error: 'Internal server error' });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Error details:', errorMessage);
+      res.status(500).json({ 
+        error: 'Internal server error',
+        message: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      });
     }
   }
 }

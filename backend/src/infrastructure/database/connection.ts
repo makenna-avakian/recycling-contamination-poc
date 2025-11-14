@@ -8,11 +8,17 @@ let pool: Pool | null = null;
 
 export function getDatabasePool(): Pool {
   if (!pool) {
+    // Handle $USER environment variable expansion
+    let dbUser = process.env.DB_USER;
+    if (dbUser === '$USER' || !dbUser) {
+      dbUser = process.env.USER || require('os').userInfo().username;
+    }
+    
     pool = new Pool({
       host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT || '5432'),
       database: process.env.DB_NAME || 'recycling_contamination',
-      user: process.env.DB_USER || process.env.USER,
+      user: dbUser,
       password: process.env.DB_PASSWORD || '',
     });
   }
