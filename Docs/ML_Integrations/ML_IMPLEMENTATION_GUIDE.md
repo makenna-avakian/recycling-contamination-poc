@@ -12,16 +12,29 @@ This guide explains how machine learning-powered predictive searches were added 
 6. [Best Practices](#best-practices)
 7. [Future Enhancements](#future-enhancements)
 
+> **📊 Advanced Models**: For production systems with massive datasets spanning years, see [ADVANCED_ML_MODELS.md](./ADVANCED_ML_MODELS.md) for guidance on GRU, LSTM, Transformers, and other advanced time series models.
+
 ## Overview
 
 **Note on Terminology**: This implementation uses **machine learning** (statistical analysis, pattern recognition, trend detection) rather than traditional AI/LLM approaches. It analyzes historical data patterns using algorithms to generate intelligent, actionable search suggestions. For true AI/LLM features (like natural language generation), see the [Future Enhancements](#future-enhancements) section.
 
+### ML Models & Techniques Used
+
+This implementation uses the following **supervised and unsupervised ML techniques**:
+
+1. **Time Series Analysis** - Analyzes temporal patterns by comparing data across time periods (week-over-week comparisons)
+2. **Statistical Trend Detection** - Uses percentage change calculations and threshold-based classification to identify increasing/decreasing/stable trends
+3. **Simple Linear Extrapolation** - Forecasts future values using linear projection based on recent averages (e.g., `future_value = recent_avg * 1.1`)
+4. **Frequency-based Pattern Recognition** - Identifies most common patterns using COUNT() aggregations and frequency analysis
+5. **Moving Average Analysis** - Uses SQL window functions and AVG() aggregations over rolling time windows
+6. **Threshold-based Classification** - Classifies trends using rule-based thresholds (e.g., >20% increase = "increasing")
+
 The machine learning functionality analyzes historical data patterns to generate intelligent, actionable search suggestions. Instead of requiring users to know what to search for, the system proactively suggests relevant queries based on:
 
-- **Trend Analysis**: Identifies increasing/decreasing patterns
-- **Anomaly Detection**: Finds outliers and concerning patterns
-- **Predictive Modeling**: Forecasts future trends
-- **Pattern Recognition**: Discovers correlations between data points
+- **Trend Analysis**: Identifies increasing/decreasing patterns using time series analysis
+- **Anomaly Detection**: Finds outliers using statistical thresholds and frequency analysis
+- **Predictive Modeling**: Forecasts future trends using simple linear extrapolation
+- **Pattern Recognition**: Discovers correlations using frequency analysis and aggregations
 
 ### Key Features
 
@@ -223,9 +236,20 @@ export function PredictiveSearches() {
 
 ## Code Walkthrough
 
+### ML Technique Mapping
+
+Each analysis method uses specific ML techniques:
+
+| Method | Primary ML Technique | Secondary Techniques |
+|--------|---------------------|---------------------|
+| `analyzeRouteTrends()` | **Time Series Analysis** | Statistical Trend Detection, Threshold-based Classification |
+| `analyzeCategoryTrends()` | **Frequency-based Pattern Recognition** | Statistical Aggregation (COUNT, AVG) |
+| `analyzeSeverityTrends()` | **Statistical Aggregation** | Threshold-based Classification |
+| `predictFutureTrends()` | **Simple Linear Extrapolation** | Moving Average Analysis, Time Series Analysis |
+
 ### Trend Analysis Algorithm
 
-The core algorithm compares time periods to identify trends:
+The core algorithm uses **Time Series Analysis** and **Statistical Trend Detection** to compare time periods and identify trends:
 
 ```typescript
 private async analyzeRouteTrends(pool: any): Promise<any[]> {
@@ -282,42 +306,47 @@ private async analyzeRouteTrends(pool: any): Promise<any[]> {
 }
 ```
 
+**ML Techniques Used**:
+- **Time Series Analysis**: Groups data by week using `DATE_TRUNC('week', ...)`
+- **Statistical Trend Detection**: Calculates percentage change `((current - previous) / previous * 100)`
+- **Threshold-based Classification**: Uses CASE statements to classify trends (>20% = increasing, <20% = decreasing)
+
 **How it works**:
-1. Groups data by week for the last 30 days
-2. Compares current week vs previous week
-3. Calculates percentage change
-4. Flags increases > 10% as "increasing"
+1. Groups data by week for the last 30 days (Time Series Analysis)
+2. Compares current week vs previous week (Statistical Comparison)
+3. Calculates percentage change (Statistical Trend Detection)
+4. Flags increases > 10% as "increasing" (Threshold-based Classification)
 5. Returns routes with concerning trends
 
 ### Confidence Scoring
 
-Confidence is calculated based on:
-- **Magnitude of change**: Larger changes = higher confidence
-- **Data volume**: More data points = more reliable
-- **Pattern consistency**: Consistent patterns = higher confidence
+Uses **Statistical Confidence Estimation** based on:
+- **Magnitude of change**: Larger changes = higher confidence (using percentage change as a proxy)
+- **Data volume**: More data points = more reliable (implicit in SQL aggregations)
+- **Pattern consistency**: Consistent patterns = higher confidence (validated by requiring multiple weeks)
 
 ```typescript
 confidence: Math.min(0.9, 0.5 + (trend.changePercent / 50))
 ```
 
-This formula:
-- Starts at 50% base confidence
-- Adds up to 40% based on change magnitude
-- Caps at 90% to account for uncertainty
+**ML Technique**: This is a **simple statistical confidence model** that:
+- Starts at 50% base confidence (prior probability)
+- Adds up to 40% based on change magnitude (evidence strength)
+- Caps at 90% to account for uncertainty (Bayesian-like approach)
 
 ### Generating Insights
 
-Each search includes a machine learning-generated insight:
+Each search includes a machine learning-generated insight using **Rule-based Pattern Interpretation**:
 
 ```typescript
 insight: `Route ${trend.routeCode} shows a concerning upward trend. 
          Consider targeted education campaigns.`
 ```
 
-Insights are generated based on:
-- The type of pattern detected
-- The severity of the issue
-- Recommended actions
+**ML Technique**: **Rule-based Pattern Interpretation** - Insights are generated using predefined templates based on:
+- The type of pattern detected (from classification results)
+- The severity of the issue (from statistical aggregations)
+- Recommended actions (domain knowledge encoded as rules)
 
 ## Adapting to Other Projects
 

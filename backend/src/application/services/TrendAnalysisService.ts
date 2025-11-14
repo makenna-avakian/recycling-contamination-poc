@@ -4,8 +4,15 @@ import { getDatabasePool } from '../../infrastructure/database/connection';
 
 /**
  * Machine Learning-Powered Trend Analysis Service
- * Analyzes contamination data patterns using statistical analysis and pattern recognition
- * to generate predictive search suggestions
+ * 
+ * Uses the following ML techniques:
+ * - Time Series Analysis: Week-over-week comparisons using DATE_TRUNC
+ * - Statistical Trend Detection: Percentage change calculations with threshold-based classification
+ * - Simple Linear Extrapolation: Future value prediction using linear projection (future = recent_avg * 1.1)
+ * - Frequency-based Pattern Recognition: COUNT() aggregations to identify most common patterns
+ * - Moving Average Analysis: AVG() aggregations over rolling time windows
+ * 
+ * Analyzes contamination data patterns to generate predictive search suggestions
  */
 export interface PredictiveSearch {
   title: string;
