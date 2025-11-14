@@ -17,6 +17,7 @@ export interface ContaminationEvent {
   estimatedContaminationPct: number;
   notes: string | null;
   createdAt: string;
+  pickupTime: string;
 }
 
 export const contaminationApi = {

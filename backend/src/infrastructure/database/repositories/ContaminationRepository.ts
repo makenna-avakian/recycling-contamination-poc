@@ -11,15 +11,17 @@ export class ContaminationRepository implements IContaminationRepository {
     const pool = getDatabasePool();
     const result = await pool.query(`
       SELECT 
-        contamination_id,
-        pickup_id,
-        category_id,
-        severity,
-        estimated_contamination_pct,
-        notes,
-        created_at
-      FROM contamination_events
-      ORDER BY created_at DESC
+        ce.contamination_id,
+        ce.pickup_id,
+        ce.category_id,
+        ce.severity,
+        ce.estimated_contamination_pct,
+        ce.notes,
+        ce.created_at,
+        p.pickup_time
+      FROM contamination_events ce
+      INNER JOIN pickups p ON ce.pickup_id = p.pickup_id
+      ORDER BY p.pickup_time DESC
     `);
 
     return result.rows.map(row => new ContaminationEvent(
@@ -70,11 +72,12 @@ export class ContaminationRepository implements IContaminationRepository {
         ce.severity,
         ce.estimated_contamination_pct,
         ce.notes,
-        ce.created_at
+        ce.created_at,
+        p.pickup_time
       FROM contamination_events ce
       INNER JOIN pickups p ON ce.pickup_id = p.pickup_id
       WHERE p.route_id = $1
-      ORDER BY ce.created_at DESC
+      ORDER BY p.pickup_time DESC
     `, [routeId]);
 
     return result.rows.map(row => new ContaminationEvent(
@@ -98,7 +101,8 @@ export class ContaminationRepository implements IContaminationRepository {
         ce.severity,
         ce.estimated_contamination_pct,
         ce.notes,
-        ce.created_at
+        ce.created_at,
+        p.pickup_time
       FROM contamination_events ce
       INNER JOIN pickups p ON ce.pickup_id = p.pickup_id
       WHERE p.pickup_time >= $1::timestamptz AND p.pickup_time <= $2::timestamptz

@@ -15,7 +15,7 @@ function Dashboard() {
 
   // Process data for charts
   const timeSeriesData = contaminationData?.reduce((acc: any[], event) => {
-    const date = new Date(event.createdAt).toLocaleDateString();
+    const date = new Date(event.pickupTime || event.createdAt).toLocaleDateString();
     const existing = acc.find(item => item.date === date);
     if (existing) {
       existing.count += 1;
@@ -47,6 +47,21 @@ function Dashboard() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  if (!contaminationData || contaminationData.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <p className="mt-2 text-gray-600">Overview of recycling contamination data</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-12 text-center">
+          <p className="text-gray-500 text-lg">No contamination data found</p>
+          <p className="text-gray-400 text-sm mt-2">Make sure the database has seed data loaded</p>
+        </div>
       </div>
     );
   }
@@ -151,10 +166,11 @@ function Dashboard() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {contaminationData?.slice(0, 10).map((event) => (
+              {contaminationData && contaminationData.length > 0 ? (
+                contaminationData.slice(0, 10).map((event) => (
                 <tr key={event.contaminationId} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {new Date(event.createdAt).toLocaleDateString()}
+                    {new Date(event.pickupTime || event.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -172,7 +188,14 @@ function Dashboard() {
                     {event.notes || '-'}
                   </td>
                 </tr>
-              ))}
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">
+                    No contamination events found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

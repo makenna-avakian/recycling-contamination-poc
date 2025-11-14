@@ -127,59 +127,60 @@ INSERT INTO containers (customer_id, label, size_gallons, stream_type) VALUES
     (32, 'Residence Cart', 96, 'single_stream');
 
 -- 6. Pickups (pickup events spanning multiple weeks for trend analysis)
+-- Using recent dates (within last 30 days) so data shows up by default
 INSERT INTO pickups (container_id, route_id, pickup_time, weight_kg, driver_name, notes) VALUES
-    -- Week 1 (Jan 1-7)
-    (1, 1, '2024-01-01 08:30:00-05', 13.8, 'Mike Rodriguez', 'Contamination noted'),
-    (2, 1, '2024-01-01 08:35:00-05', 9.1, 'Mike Rodriguez', NULL),
-    (6, 2, '2024-01-02 07:45:00-05', 16.8, 'Sarah Johnson', 'High contamination'),
-    (7, 2, '2024-01-02 08:00:00-05', 10.2, 'Sarah Johnson', NULL),
-    (9, 3, '2024-01-03 08:30:00-05', 14.5, 'Carlos Mendez', NULL),
-    (12, 5, '2024-01-04 09:15:00-05', 11.3, 'David Kim', NULL),
-    (28, 6, '2024-01-05 07:30:00-05', 15.7, 'Lisa Wang', NULL),
+    -- Week 1 (3 weeks ago)
+    (1, 1, (CURRENT_DATE - INTERVAL '21 days')::date + TIME '08:30:00', 13.8, 'Mike Rodriguez', 'Contamination noted'),
+    (2, 1, (CURRENT_DATE - INTERVAL '21 days')::date + TIME '08:35:00', 9.1, 'Mike Rodriguez', NULL),
+    (6, 2, (CURRENT_DATE - INTERVAL '20 days')::date + TIME '07:45:00', 16.8, 'Sarah Johnson', 'High contamination'),
+    (7, 2, (CURRENT_DATE - INTERVAL '20 days')::date + TIME '08:00:00', 10.2, 'Sarah Johnson', NULL),
+    (9, 3, (CURRENT_DATE - INTERVAL '19 days')::date + TIME '08:30:00', 14.5, 'Carlos Mendez', NULL),
+    (12, 5, (CURRENT_DATE - INTERVAL '18 days')::date + TIME '09:15:00', 11.3, 'David Kim', NULL),
+    (28, 6, (CURRENT_DATE - INTERVAL '17 days')::date + TIME '07:30:00', 15.7, 'Lisa Wang', NULL),
     
-    -- Week 2 (Jan 8-14)
-    (1, 1, '2024-01-08 08:30:00-05', 11.2, 'Mike Rodriguez', NULL),
-    (3, 1, '2024-01-08 09:15:00-05', 14.5, 'Mike Rodriguez', NULL),
-    (6, 2, '2024-01-09 07:45:00-05', 15.1, 'Sarah Johnson', NULL),
-    (8, 2, '2024-01-09 08:10:00-05', 12.3, 'Sarah Johnson', 'Some contamination'),
-    (10, 3, '2024-01-10 08:45:00-05', 8.2, 'Carlos Mendez', NULL),
-    (20, 4, '2024-01-11 08:00:00-05', 18.9, 'James Lee', NULL),
-    (26, 5, '2024-01-12 09:00:00-05', 13.4, 'David Kim', NULL),
-    (30, 6, '2024-01-13 07:45:00-05', 12.1, 'Lisa Wang', NULL),
+    -- Week 2 (2 weeks ago)
+    (1, 1, (CURRENT_DATE - INTERVAL '14 days')::date + TIME '08:30:00', 11.2, 'Mike Rodriguez', NULL),
+    (3, 1, (CURRENT_DATE - INTERVAL '14 days')::date + TIME '09:15:00', 14.5, 'Mike Rodriguez', NULL),
+    (6, 2, (CURRENT_DATE - INTERVAL '13 days')::date + TIME '07:45:00', 15.1, 'Sarah Johnson', NULL),
+    (8, 2, (CURRENT_DATE - INTERVAL '13 days')::date + TIME '08:10:00', 12.3, 'Sarah Johnson', 'Some contamination'),
+    (10, 3, (CURRENT_DATE - INTERVAL '12 days')::date + TIME '08:45:00', 8.2, 'Carlos Mendez', NULL),
+    (20, 4, (CURRENT_DATE - INTERVAL '11 days')::date + TIME '08:00:00', 18.9, 'James Lee', NULL),
+    (26, 5, (CURRENT_DATE - INTERVAL '10 days')::date + TIME '09:00:00', 13.4, 'David Kim', NULL),
+    (30, 6, (CURRENT_DATE - INTERVAL '9 days')::date + TIME '07:45:00', 12.1, 'Lisa Wang', NULL),
     
-    -- Week 3 (Jan 15-21) - Current week
-    (1, 1, '2024-01-15 08:30:00-05', 12.5, 'Mike Rodriguez', 'Normal pickup'),
-    (2, 1, '2024-01-15 08:35:00-05', 8.2, 'Mike Rodriguez', NULL),
-    (3, 1, '2024-01-15 09:15:00-05', 15.3, 'Mike Rodriguez', 'Heavy load'),
-    (4, 1, '2024-01-15 09:20:00-05', 18.7, 'Mike Rodriguez', NULL),
-    (5, 1, '2024-01-15 09:25:00-05', 10.1, 'Mike Rodriguez', NULL),
-    (11, 1, '2024-01-15 09:30:00-05', 16.2, 'Mike Rodriguez', NULL),
+    -- Week 3 (1 week ago - recent)
+    (1, 1, (CURRENT_DATE - INTERVAL '7 days')::date + TIME '08:30:00', 12.5, 'Mike Rodriguez', 'Normal pickup'),
+    (2, 1, (CURRENT_DATE - INTERVAL '7 days')::date + TIME '08:35:00', 8.2, 'Mike Rodriguez', NULL),
+    (3, 1, (CURRENT_DATE - INTERVAL '7 days')::date + TIME '09:15:00', 15.3, 'Mike Rodriguez', 'Heavy load'),
+    (4, 1, (CURRENT_DATE - INTERVAL '7 days')::date + TIME '09:20:00', 18.7, 'Mike Rodriguez', NULL),
+    (5, 1, (CURRENT_DATE - INTERVAL '7 days')::date + TIME '09:25:00', 10.1, 'Mike Rodriguez', NULL),
+    (11, 1, (CURRENT_DATE - INTERVAL '7 days')::date + TIME '09:30:00', 16.2, 'Mike Rodriguez', NULL),
     
-    (6, 2, '2024-01-16 07:45:00-05', 14.2, 'Sarah Johnson', NULL),
-    (7, 2, '2024-01-16 08:00:00-05', 9.8, 'Sarah Johnson', NULL),
-    (8, 2, '2024-01-16 08:10:00-05', 11.5, 'Sarah Johnson', 'Some contamination observed'),
-    (14, 2, '2024-01-16 08:20:00-05', 17.3, 'Sarah Johnson', NULL),
-    (15, 2, '2024-01-16 08:30:00-05', 13.6, 'Sarah Johnson', NULL),
+    (6, 2, (CURRENT_DATE - INTERVAL '6 days')::date + TIME '07:45:00', 14.2, 'Sarah Johnson', NULL),
+    (7, 2, (CURRENT_DATE - INTERVAL '6 days')::date + TIME '08:00:00', 9.8, 'Sarah Johnson', NULL),
+    (8, 2, (CURRENT_DATE - INTERVAL '6 days')::date + TIME '08:10:00', 11.5, 'Sarah Johnson', 'Some contamination observed'),
+    (14, 2, (CURRENT_DATE - INTERVAL '6 days')::date + TIME '08:20:00', 17.3, 'Sarah Johnson', NULL),
+    (15, 2, (CURRENT_DATE - INTERVAL '6 days')::date + TIME '08:30:00', 13.6, 'Sarah Johnson', NULL),
     
-    (9, 3, '2024-01-17 08:30:00-05', 16.3, 'Carlos Mendez', NULL),
-    (10, 3, '2024-01-17 08:45:00-05', 7.5, 'Carlos Mendez', NULL),
-    (11, 3, '2024-01-17 09:00:00-05', 13.2, 'Carlos Mendez', NULL),
-    (17, 3, '2024-01-17 09:15:00-05', 19.1, 'Carlos Mendez', NULL),
-    (18, 3, '2024-01-17 09:30:00-05', 14.8, 'Carlos Mendez', NULL),
+    (9, 3, (CURRENT_DATE - INTERVAL '5 days')::date + TIME '08:30:00', 16.3, 'Carlos Mendez', NULL),
+    (10, 3, (CURRENT_DATE - INTERVAL '5 days')::date + TIME '08:45:00', 7.5, 'Carlos Mendez', NULL),
+    (11, 3, (CURRENT_DATE - INTERVAL '5 days')::date + TIME '09:00:00', 13.2, 'Carlos Mendez', NULL),
+    (17, 3, (CURRENT_DATE - INTERVAL '5 days')::date + TIME '09:15:00', 19.1, 'Carlos Mendez', NULL),
+    (18, 3, (CURRENT_DATE - INTERVAL '5 days')::date + TIME '09:30:00', 14.8, 'Carlos Mendez', NULL),
     
-    (20, 4, '2024-01-18 08:00:00-05', 16.4, 'James Lee', NULL),
-    (21, 4, '2024-01-18 08:15:00-05', 22.3, 'James Lee', 'Heavy commercial load'),
-    (22, 4, '2024-01-18 08:30:00-05', 11.7, 'James Lee', NULL),
+    (20, 4, (CURRENT_DATE - INTERVAL '4 days')::date + TIME '08:00:00', 16.4, 'James Lee', NULL),
+    (21, 4, (CURRENT_DATE - INTERVAL '4 days')::date + TIME '08:15:00', 22.3, 'James Lee', 'Heavy commercial load'),
+    (22, 4, (CURRENT_DATE - INTERVAL '4 days')::date + TIME '08:30:00', 11.7, 'James Lee', NULL),
     
-    (12, 5, '2024-01-18 09:15:00-05', 12.8, 'David Kim', NULL),
-    (13, 5, '2024-01-18 09:30:00-05', 19.4, 'David Kim', 'Heavy contamination'),
-    (25, 5, '2024-01-18 09:45:00-05', 15.2, 'David Kim', NULL),
-    (26, 5, '2024-01-18 10:00:00-05', 10.9, 'David Kim', NULL),
+    (12, 5, (CURRENT_DATE - INTERVAL '4 days')::date + TIME '09:15:00', 12.8, 'David Kim', NULL),
+    (13, 5, (CURRENT_DATE - INTERVAL '4 days')::date + TIME '09:30:00', 19.4, 'David Kim', 'Heavy contamination'),
+    (25, 5, (CURRENT_DATE - INTERVAL '4 days')::date + TIME '09:45:00', 15.2, 'David Kim', NULL),
+    (26, 5, (CURRENT_DATE - INTERVAL '4 days')::date + TIME '10:00:00', 10.9, 'David Kim', NULL),
     
-    (28, 6, '2024-01-19 07:30:00-05', 14.6, 'Lisa Wang', NULL),
-    (29, 6, '2024-01-19 07:45:00-05', 12.3, 'Lisa Wang', NULL),
-    (30, 6, '2024-01-19 08:00:00-05', 13.8, 'Lisa Wang', NULL),
-    (31, 6, '2024-01-19 08:15:00-05', 17.1, 'Lisa Wang', NULL);
+    (28, 6, (CURRENT_DATE - INTERVAL '3 days')::date + TIME '07:30:00', 14.6, 'Lisa Wang', NULL),
+    (29, 6, (CURRENT_DATE - INTERVAL '3 days')::date + TIME '07:45:00', 12.3, 'Lisa Wang', NULL),
+    (30, 6, (CURRENT_DATE - INTERVAL '3 days')::date + TIME '08:00:00', 13.8, 'Lisa Wang', NULL),
+    (31, 6, (CURRENT_DATE - INTERVAL '3 days')::date + TIME '08:15:00', 17.1, 'Lisa Wang', NULL);
 
 -- 7. Contamination events (contamination found during pickups)
 INSERT INTO contamination_events (pickup_id, category_id, severity, estimated_contamination_pct, notes) VALUES
@@ -217,26 +218,27 @@ INSERT INTO contamination_events (pickup_id, category_id, severity, estimated_co
     (42, 2, 2, 8.5, 'Some food waste');
 
 -- 8. Education actions (outreach efforts to customers)
+-- Using recent dates to match pickup dates
 INSERT INTO education_actions (customer_id, action_date, channel, description) VALUES
     -- Week 1 education actions
-    (2, '2024-01-05', 'email', 'Welcome email with recycling tips'),
-    (7, '2024-01-06', 'mail', 'Mailed recycling guide brochure'),
-    (1, '2024-01-07', 'tag_on_bin', 'Left informational tag about proper recycling'),
+    (2, (CURRENT_DATE - INTERVAL '17 days')::date, 'email', 'Welcome email with recycling tips'),
+    (7, (CURRENT_DATE - INTERVAL '16 days')::date, 'mail', 'Mailed recycling guide brochure'),
+    (1, (CURRENT_DATE - INTERVAL '15 days')::date, 'tag_on_bin', 'Left informational tag about proper recycling'),
     
     -- Week 2 education actions (targeting contamination issues)
-    (1, '2024-01-10', 'tag_on_bin', 'Left informational tag about plastic bag contamination'),
-    (1, '2024-01-12', 'email', 'Sent email with recycling guidelines'),
-    (4, '2024-01-11', 'tag_on_bin', 'Tagged bin with contamination notice'),
-    (8, '2024-01-11', 'email', 'Sent email about food waste contamination'),
-    (10, '2024-01-13', 'site_visit', 'In-person visit to discuss proper recycling'),
-    (10, '2024-01-14', 'email', 'Follow-up email with resources'),
-    (15, '2024-01-12', 'tag_on_bin', 'Tagged bin with styrofoam contamination notice'),
+    (1, (CURRENT_DATE - INTERVAL '12 days')::date, 'tag_on_bin', 'Left informational tag about plastic bag contamination'),
+    (1, (CURRENT_DATE - INTERVAL '10 days')::date, 'email', 'Sent email with recycling guidelines'),
+    (4, (CURRENT_DATE - INTERVAL '11 days')::date, 'tag_on_bin', 'Tagged bin with contamination notice'),
+    (8, (CURRENT_DATE - INTERVAL '11 days')::date, 'email', 'Sent email about food waste contamination'),
+    (10, (CURRENT_DATE - INTERVAL '9 days')::date, 'site_visit', 'In-person visit to discuss proper recycling'),
+    (10, (CURRENT_DATE - INTERVAL '8 days')::date, 'email', 'Follow-up email with resources'),
+    (15, (CURRENT_DATE - INTERVAL '10 days')::date, 'tag_on_bin', 'Tagged bin with styrofoam contamination notice'),
     
     -- Week 3 education actions (ongoing outreach)
-    (3, '2024-01-15', 'email', 'Sent commercial recycling guidelines'),
-    (11, '2024-01-16', 'site_visit', 'Restaurant recycling consultation'),
-    (20, '2024-01-17', 'email', 'Commercial recycling best practices email'),
-    (25, '2024-01-18', 'tag_on_bin', 'Tagged bin with contamination notice'),
-    (28, '2024-01-19', 'phone_call', 'Called to discuss recycling improvements'),
-    (31, '2024-01-19', 'email', 'Sent recycling education materials');
+    (3, (CURRENT_DATE - INTERVAL '7 days')::date, 'email', 'Sent commercial recycling guidelines'),
+    (11, (CURRENT_DATE - INTERVAL '6 days')::date, 'site_visit', 'Restaurant recycling consultation'),
+    (20, (CURRENT_DATE - INTERVAL '5 days')::date, 'email', 'Commercial recycling best practices email'),
+    (25, (CURRENT_DATE - INTERVAL '4 days')::date, 'tag_on_bin', 'Tagged bin with contamination notice'),
+    (28, (CURRENT_DATE - INTERVAL '3 days')::date, 'phone_call', 'Called to discuss recycling improvements'),
+    (31, (CURRENT_DATE - INTERVAL '3 days')::date, 'email', 'Sent recycling education materials');
 

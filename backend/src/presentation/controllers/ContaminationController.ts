@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { GetContaminationByRoute } from '../../application/use-cases/GetContaminationByRoute';
 import { GetContaminationOverTime } from '../../application/use-cases/GetContaminationOverTime';
+import { getDatabasePool } from '../../infrastructure/database/connection';
 
 /**
  * Presentation Layer: Contamination Controller
@@ -21,7 +22,25 @@ export class ContaminationController {
       }
 
       const contamination = await this.getContaminationByRoute.execute(routeId);
-      res.json(contamination);
+      // Enrich with pickup_time from database (batch query)
+      const pool = getDatabasePool();
+      const pickupIds = contamination.map(e => e.pickupId);
+      const pickupTimes = pickupIds.length > 0 
+        ? await pool.query('SELECT pickup_id, pickup_time FROM pickups WHERE pickup_id = ANY($1)', [pickupIds])
+        : { rows: [] };
+      const pickupTimeMap = new Map(pickupTimes.rows.map((r: any) => [r.pickup_id, r.pickup_time]));
+      
+      const enriched = contamination.map((event) => ({
+        contaminationId: event.contaminationId,
+        pickupId: event.pickupId,
+        categoryId: event.categoryId,
+        severity: event.severity,
+        estimatedContaminationPct: event.estimatedContaminationPct,
+        notes: event.notes,
+        createdAt: event.createdAt.toISOString(),
+        pickupTime: pickupTimeMap.get(event.pickupId) || event.createdAt.toISOString()
+      }));
+      res.json(enriched);
     } catch (error) {
       console.error('Error getting contamination by route:', error);
       res.status(500).json({ error: 'Internal server error' });
@@ -44,7 +63,25 @@ export class ContaminationController {
       }
 
       const contamination = await this.getContaminationOverTime.execute(startDate, endDate);
-      res.json(contamination);
+      // Enrich with pickup_time from database (batch query)
+      const pool = getDatabasePool();
+      const pickupIds = contamination.map(e => e.pickupId);
+      const pickupTimes = pickupIds.length > 0
+        ? await pool.query('SELECT pickup_id, pickup_time FROM pickups WHERE pickup_id = ANY($1)', [pickupIds])
+        : { rows: [] };
+      const pickupTimeMap = new Map(pickupTimes.rows.map((r: any) => [r.pickup_id, r.pickup_time]));
+      
+      const enriched = contamination.map((event) => ({
+        contaminationId: event.contaminationId,
+        pickupId: event.pickupId,
+        categoryId: event.categoryId,
+        severity: event.severity,
+        estimatedContaminationPct: event.estimatedContaminationPct,
+        notes: event.notes,
+        createdAt: event.createdAt.toISOString(),
+        pickupTime: pickupTimeMap.get(event.pickupId) || event.createdAt.toISOString()
+      }));
+      res.json(enriched);
     } catch (error) {
       console.error('Error getting contamination over time:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';

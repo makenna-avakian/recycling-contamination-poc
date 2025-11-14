@@ -15,7 +15,7 @@ function OverTimePage() {
 
   // Process data for time series
   const timeSeriesData = contaminationData?.reduce((acc: any[], event) => {
-    const date = new Date(event.createdAt).toLocaleDateString();
+    const date = new Date(event.pickupTime || event.createdAt).toLocaleDateString();
     const existing = acc.find(item => item.date === date);
     if (existing) {
       existing.count += 1;
