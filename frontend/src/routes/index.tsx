@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { contaminationApi } from '../lib/api';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { PredictiveSearches } from '../components/PredictiveSearches';
 
 export const Route = createFileRoute('/')({
   component: Dashboard,
@@ -72,6 +73,9 @@ function Dashboard() {
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <p className="mt-2 text-gray-600">Overview of recycling contamination data</p>
       </div>
+
+      {/* AI-Powered Predictive Searches */}
+      <PredictiveSearches />
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

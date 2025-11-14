@@ -20,6 +20,15 @@ export interface ContaminationEvent {
   pickupTime: string;
 }
 
+export interface PredictiveSearch {
+  title: string;
+  description: string;
+  queryType: 'route' | 'category' | 'severity' | 'trend' | 'customer';
+  queryParams: Record<string, any>;
+  confidence: number;
+  insight: string;
+}
+
 export const contaminationApi = {
   getByRoute: async (routeId: number): Promise<ContaminationEvent[]> => {
     const response = await api.get(`/api/contamination/route/${routeId}`);
@@ -32,6 +41,11 @@ export const contaminationApi = {
     if (endDate) params.append('endDate', endDate);
     
     const response = await api.get(`/api/contamination/over-time?${params.toString()}`);
+    return response.data;
+  },
+
+  getPredictiveSearches: async (): Promise<PredictiveSearch[]> => {
+    const response = await api.get('/api/contamination/predictive-searches');
     return response.data;
   },
 };

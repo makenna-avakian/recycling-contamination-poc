@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { GetContaminationByRoute } from '../../application/use-cases/GetContaminationByRoute';
 import { GetContaminationOverTime } from '../../application/use-cases/GetContaminationOverTime';
+import { GetPredictiveSearches } from '../../application/use-cases/GetPredictiveSearches';
 import { getDatabasePool } from '../../infrastructure/database/connection';
 
 /**
@@ -10,7 +11,8 @@ import { getDatabasePool } from '../../infrastructure/database/connection';
 export class ContaminationController {
   constructor(
     private getContaminationByRoute: GetContaminationByRoute,
-    private getContaminationOverTime: GetContaminationOverTime
+    private getContaminationOverTime: GetContaminationOverTime,
+    private getPredictiveSearchesUseCase: GetPredictiveSearches
   ) {}
 
   async getByRoute(req: Request, res: Response): Promise<void> {
@@ -86,6 +88,20 @@ export class ContaminationController {
       console.error('Error getting contamination over time:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('Error details:', errorMessage);
+      res.status(500).json({ 
+        error: 'Internal server error',
+        message: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      });
+    }
+  }
+
+  async getPredictiveSearches(req: Request, res: Response): Promise<void> {
+    try {
+      const searches = await this.getPredictiveSearchesUseCase.execute();
+      res.json(searches);
+    } catch (error) {
+      console.error('Error getting predictive searches:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       res.status(500).json({ 
         error: 'Internal server error',
         message: process.env.NODE_ENV === 'development' ? errorMessage : undefined
