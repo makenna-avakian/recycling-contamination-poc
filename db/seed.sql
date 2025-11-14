@@ -123,9 +123,9 @@ INSERT INTO contamination_events (pickup_id, category_id, severity, estimated_co
     (16, 1, 4, 22.0, 'Plastic bags contamination'),
     (16, 2, 3, 15.0, 'Food waste mixed in'),
     
-    (20, 1, 5, 30.0, 'Severe plastic bag contamination'),
-    (20, 2, 4, 20.0, 'Significant food waste'),
-    (20, 3, 2, 8.0, 'Some styrofoam');
+    (18, 1, 5, 30.0, 'Severe plastic bag contamination'),
+    (18, 2, 4, 20.0, 'Significant food waste'),
+    (18, 3, 2, 8.0, 'Some styrofoam');
 
 -- 8. Education actions (outreach efforts to customers)
 INSERT INTO education_actions (customer_id, action_date, channel, description) VALUES

@@ -20,3 +20,14 @@ _book
 *.dump
 .env
 .env.local
+.env.*
+
+# Backend
+backend/dist/
+backend/node_modules/
+backend/.env
+backend/.env.local
+backend/.env.*
+backend/*.log
+backend/coverage/
+backend/.nyc_output/
