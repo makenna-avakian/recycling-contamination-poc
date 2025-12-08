@@ -47,6 +47,34 @@ if [ -f "$SEED_FILE" ] && [ -s "$SEED_FILE" ]; then
     echo ""
 fi
 
+# Check if enhanced seed file exists and ask user
+ENHANCED_SEED_FILE="db/enhanced_seed.sql"
+if [ -f "$ENHANCED_SEED_FILE" ] && [ -s "$ENHANCED_SEED_FILE" ]; then
+    echo "📊 Enhanced seed data found (for trend alerts and visualizations)"
+    echo "   This will add ~800+ pickups with clear trends over last 90 days"
+    read -p "   Load enhanced seed data? (Y/n): " -n 1 -r
+    echo ""
+    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+        echo "🌱 Loading enhanced seed data..."
+        psql "$DB_NAME" -f "$ENHANCED_SEED_FILE"
+        echo ""
+    fi
+fi
+
+# Check if multi-year seed file exists and ask user
+MULTI_YEAR_SEED_FILE="db/multi_year_seed.sql"
+if [ -f "$MULTI_YEAR_SEED_FILE" ] && [ -s "$MULTI_YEAR_SEED_FILE" ]; then
+    echo "📊 Multi-year seed data found (for SARIMA model testing)"
+    echo "   This will add ~9,000+ pickups spanning 3+ years"
+    read -p "   Load multi-year data? (y/N): " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo "🌱 Loading multi-year seed data..."
+        psql "$DB_NAME" -f "$MULTI_YEAR_SEED_FILE"
+        echo ""
+    fi
+fi
+
 # Verify tables were created
 echo "✅ Verifying tables..."
 psql "$DB_NAME" -c "\dt" | head -20

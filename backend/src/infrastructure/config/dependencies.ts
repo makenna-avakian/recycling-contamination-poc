@@ -17,7 +17,7 @@ import { GetContaminationByRoute } from '../../application/use-cases/GetContamin
 import { GetContaminationOverTime } from '../../application/use-cases/GetContaminationOverTime';
 import { GetWorstOffendingCustomers } from '../../application/use-cases/GetWorstOffendingCustomers';
 import { GetPredictiveSearches } from '../../application/use-cases/GetPredictiveSearches';
-import { TrendAnalysisService } from '../../application/services/TrendAnalysisService';
+import { MLTrendAnalysisService } from '../../application/services/MLTrendAnalysisService';
 
 import { ContaminationController } from '../../presentation/controllers/ContaminationController';
 
@@ -42,12 +42,12 @@ export const getWorstOffendingCustomers = new GetWorstOffendingCustomers(
 
 /**
  * Application Layer: Machine Learning Services
+ * 
+ * Using SARIMA-based ML service for predictive trend analysis
+ * This replaces the statistical TrendAnalysisService with actual ML models
  */
-export const trendAnalysisService = new TrendAnalysisService(
-  contaminationRepository,
-  routeRepository
-);
-export const getPredictiveSearches = new GetPredictiveSearches(trendAnalysisService);
+export const mlTrendAnalysisService = new MLTrendAnalysisService();
+export const getPredictiveSearches = new GetPredictiveSearches(mlTrendAnalysisService);
 
 /**
  * Presentation Layer: Controllers

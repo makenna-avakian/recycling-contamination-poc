@@ -2,7 +2,7 @@
 
 A full-stack application for tracking recycling pickups and contamination in NYC. Staff can log contamination events, analyze trends, and measure the effectiveness of education/outreach efforts.
 
-> **🤖 ML Features**: This project includes **machine learning-powered** predictive searches that use statistical analysis and pattern recognition to suggest actionable insights. See [AI_IMPLEMENTATION_GUIDE.md](./Docs/ML_Integrations/AI_IMPLEMENTATION_GUIDE.md) for a detailed explanation of how the ML functionality was implemented and how to replicate it (or add true AI/LLM features) in other projects.
+> **🤖 ML Features**: This project includes **SARIMA-based machine learning** predictive searches that use time series forecasting models to predict contamination trends. The ML service uses Python with statsmodels for SARIMA model fitting and prediction. See [ML_IMPLEMENTATION_GUIDE.md](./Docs/ML_Integrations/ML_IMPLEMENTATION_GUIDE.md) for details.
 
 ## 🎯 Project Goals
 
@@ -230,11 +230,37 @@ npm run preview  # Preview production build
 - **Use Cases** - Business workflows
 - **Value Objects** - Immutable domain concepts
 
+## 🤖 ML Service Setup
+
+The backend uses a Python-based ML service for SARIMA predictive trend analysis.
+
+### Install Python Dependencies
+
+```bash
+cd backend/ml_service
+pip3 install -r requirements.txt
+```
+
+### Environment Variables
+
+The ML service uses the same database environment variables as the backend (from `backend/.env`):
+- `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`
+
+### Testing the ML Service
+
+```bash
+cd backend/ml_service
+python3 sarima_predictor.py
+```
+
+This should output JSON with predictive search suggestions.
+
 ## 📝 Notes
 
 - Port 5000 is used by macOS AirPlay, so backend uses port 5001
 - Database username should match your system username (or update `.env`)
 - Seed data uses NYC addresses and neighborhoods for realism
+- ML service requires Python 3.8+ and at least 2 weeks of historical data for SARIMA models
 
 ## 🔮 Future Enhancements
 
