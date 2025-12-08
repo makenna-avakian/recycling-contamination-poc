@@ -1,16 +1,16 @@
-import { TrendAnalysisService, PredictiveSearch } from '../services/TrendAnalysisService';
+import { PredictiveSearch } from '../services/TrendAnalysisService';
+import { MLTrendAnalysisService } from '../services/MLTrendAnalysisService';
 
 /**
  * Use Case: Get Predictive Searches
- * Returns machine learning-generated search suggestions based on data trends
+ * Returns SARIMA ML model-generated search suggestions based on predictive trend analysis
  */
 export class GetPredictiveSearches {
   constructor(
-    private trendAnalysisService: TrendAnalysisService
+    private mlTrendAnalysisService: MLTrendAnalysisService
   ) {}
 
   async execute(): Promise<PredictiveSearch[]> {
-    return await this.trendAnalysisService.generatePredictiveSearches();
+    return await this.mlTrendAnalysisService.generatePredictiveSearches();
   }
 }
-

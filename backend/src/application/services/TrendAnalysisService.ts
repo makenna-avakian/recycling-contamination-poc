@@ -3,16 +3,22 @@ import { IRouteRepository } from '../../domain/repositories/IRouteRepository';
 import { getDatabasePool } from '../../infrastructure/database/connection';
 
 /**
- * Machine Learning-Powered Trend Analysis Service
+ * DEPRECATED: Statistical Trend Analysis Service
  * 
- * Uses the following ML techniques:
+ * ⚠️ This service has been replaced by MLTrendAnalysisService which uses SARIMA models.
+ * This file is kept for reference but is no longer used in production.
+ * 
+ * Old approach used:
  * - Time Series Analysis: Week-over-week comparisons using DATE_TRUNC
  * - Statistical Trend Detection: Percentage change calculations with threshold-based classification
  * - Simple Linear Extrapolation: Future value prediction using linear projection (future = recent_avg * 1.1)
  * - Frequency-based Pattern Recognition: COUNT() aggregations to identify most common patterns
  * - Moving Average Analysis: AVG() aggregations over rolling time windows
  * 
- * Analyzes contamination data patterns to generate predictive search suggestions
+ * New approach (MLTrendAnalysisService) uses:
+ * - SARIMA (Seasonal ARIMA) models for actual ML-based predictions
+ * - Auto-parameter selection for optimal model fitting
+ * - Confidence intervals and trend forecasting
  */
 export interface PredictiveSearch {
   title: string;
