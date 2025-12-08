@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RoutesRouteImport } from './routes/routes'
 import { Route as OverTimeRouteImport } from './routes/over-time'
+import { Route as EmailPreviewRouteImport } from './routes/email-preview'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RoutesRoute = RoutesRouteImport.update({
@@ -23,6 +24,11 @@ const OverTimeRoute = OverTimeRouteImport.update({
   path: '/over-time',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmailPreviewRoute = EmailPreviewRouteImport.update({
+  id: '/email-preview',
+  path: '/email-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/email-preview': typeof EmailPreviewRoute
   '/over-time': typeof OverTimeRoute
   '/routes': typeof RoutesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/email-preview': typeof EmailPreviewRoute
   '/over-time': typeof OverTimeRoute
   '/routes': typeof RoutesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/email-preview': typeof EmailPreviewRoute
   '/over-time': typeof OverTimeRoute
   '/routes': typeof RoutesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/over-time' | '/routes'
+  fullPaths: '/' | '/email-preview' | '/over-time' | '/routes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/over-time' | '/routes'
-  id: '__root__' | '/' | '/over-time' | '/routes'
+  to: '/' | '/email-preview' | '/over-time' | '/routes'
+  id: '__root__' | '/' | '/email-preview' | '/over-time' | '/routes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EmailPreviewRoute: typeof EmailPreviewRoute
   OverTimeRoute: typeof OverTimeRoute
   RoutesRoute: typeof RoutesRoute
 }
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OverTimeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/email-preview': {
+      id: '/email-preview'
+      path: '/email-preview'
+      fullPath: '/email-preview'
+      preLoaderRoute: typeof EmailPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EmailPreviewRoute: EmailPreviewRoute,
   OverTimeRoute: OverTimeRoute,
   RoutesRoute: RoutesRoute,
 }

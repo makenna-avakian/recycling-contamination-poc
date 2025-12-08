@@ -12,7 +12,7 @@ export const Route = createRootRoute({
                 to="/"
                 className="inline-flex items-center px-4 py-2 text-lg font-semibold text-gray-900 hover:text-primary-600 transition-colors"
               >
-                🗑️ Recycling Contamination Tracker
+                🗑️ Route Contamination Tracker
               </Link>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <Link

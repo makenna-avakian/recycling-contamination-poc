@@ -10,6 +10,20 @@ export function PredictiveSearches() {
   });
 
   const handleSearchClick = (search: PredictiveSearch) => {
+    // Check if this is a "Focus on..." prediction
+    if (search.title.startsWith('Focus on')) {
+      // Extract the contamination type from the title (e.g., "Focus on Plastic bags and film" -> "Plastic bags and film")
+      const contaminationType = search.title.replace('Focus on ', '');
+      
+      // Navigate to email preview page
+      navigate({
+        to: '/email-preview',
+        search: { contaminationType }
+      });
+      return;
+    }
+    
+    // Original navigation logic for other prediction types
     if (search.queryType === 'route' && search.queryParams.routeId) {
       navigate({ to: '/routes' });
       // Could scroll to specific route card or highlight it
