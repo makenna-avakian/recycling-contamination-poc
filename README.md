@@ -2,7 +2,7 @@
 
 A full-stack application for tracking recycling pickups and contamination in NYC. Staff can log contamination events, analyze trends, and measure the effectiveness of education/outreach efforts.
 
-> **🤖 ML Features**: This project includes **SARIMA-based machine learning** predictive searches that use time series forecasting models to predict contamination trends. The ML service uses Python with statsmodels for SARIMA model fitting and prediction. See [ML_IMPLEMENTATION_GUIDE.md](./Docs/ML_Integrations/ML_IMPLEMENTATION_GUIDE.md) for details.
+> **🤖 ML Features**: This project includes **SARIMA-based machine learning** predictive searches that use time series forecasting models to predict contamination trends. The ML service uses Python with statsmodels for SARIMA model fitting and prediction. The frontend includes an interactive **ML Capabilities** page explaining all model features. See [ML_IMPLEMENTATION_GUIDE.md](./Docs/ML_Integrations/ML_IMPLEMENTATION_GUIDE.md) for details.
 
 ## 🎯 Project Goals
 
@@ -27,6 +27,7 @@ Track and analyze:
 - TanStack Query (data fetching)
 - Tailwind CSS (styling)
 - Recharts (data visualization)
+- Responsive design with mobile menu support
 
 **Database:**
 - PostgreSQL 15
@@ -174,6 +175,7 @@ recycling-contamination-poc/
 
 - `GET /api/contamination/route/:routeId` - Get contamination events by route
 - `GET /api/contamination/over-time?startDate=&endDate=` - Get contamination events over time
+- `GET /api/contamination/predictive-searches` - Get ML-powered predictive search suggestions
 
 ### Health Check
 
@@ -181,9 +183,9 @@ recycling-contamination-poc/
 
 ## 📈 Frontend Pages
 
-- **Dashboard (`/`)** - Overview with stats cards, charts, and recent events table
-- **Routes (`/routes`)** - View contamination data by collection route
-- **Trends (`/over-time`)** - Time-series charts showing contamination patterns
+- **Dashboard (`/`)** - Overview with stats cards, charts, ML-powered predictive searches, and recent events table
+- **Routes (`/routes`)** - View contamination data by collection route with category breakdown and severity distribution charts
+- **Trends (`/over-time`)** - Time-series charts showing contamination patterns over time
 
 ## 🗄️ Sample Data
 
@@ -192,8 +194,8 @@ The seed data includes:
 - **6 Routes** - Covering different NYC neighborhoods
 - **32 Customers** - Mix of residential and commercial
 - **42 Containers** - Various sizes and stream types
-- **42 Pickups** - Spanning 3 weeks for trend analysis
-- **24 Contamination Events** - Various severity levels and types
+- **200+ Pickups** - Spanning 30+ days with increasing trend patterns
+- **100+ Contamination Events** - Various severity levels and types, including plastic bag trends
 - **16 Education Actions** - Different outreach channels
 
 ## 🧪 Development
@@ -255,17 +257,65 @@ python3 sarima_predictor.py
 
 This should output JSON with predictive search suggestions.
 
+## 🔒 Security Considerations
+
+### Environment Variables & Secrets
+
+- **Never commit `.env` files** - All `.env` files are in `.gitignore`
+- **Use environment variables** for all sensitive configuration:
+  - Database credentials (`DB_USER`, `DB_PASSWORD`, `DB_HOST`)
+  - API URLs (`VITE_API_URL`, `FRONTEND_URL`)
+  - Server ports and configuration
+- **Production recommendations**:
+  - Use a secrets management service (AWS Secrets Manager, HashiCorp Vault, etc.)
+  - Rotate database passwords regularly
+  - Use strong, unique passwords for production databases
+  - Never hardcode credentials in source code
+
+### Database Security
+
+- **Parameterized queries** - All database queries use parameterized statements to prevent SQL injection
+- **Connection pooling** - Uses PostgreSQL connection pooling for efficient and secure connections
+- **Input validation** - All route parameters and query strings are validated before use
+- **Database user permissions** - Use a dedicated database user with minimal required permissions
+
+### API Security
+
+- **CORS configuration** - CORS is configured to only allow requests from the frontend URL
+- **Input validation** - Route IDs and dates are validated before processing
+- **Error handling** - Error messages hide sensitive details in production (`NODE_ENV=production`)
+- **Read-only endpoints** - Current API endpoints are read-only (GET requests only)
+
+### Frontend Security
+
+- **Environment variables** - API URL configured via environment variable, not hardcoded
+- **No sensitive data** - Frontend doesn't store or transmit sensitive credentials
+- **HTTPS in production** - Always use HTTPS in production environments
+
+### Production Deployment Checklist
+
+- [ ] Set `NODE_ENV=production` in production environment
+- [ ] Configure CORS to only allow your production frontend domain
+- [ ] Use HTTPS for all API and frontend endpoints
+- [ ] Set up database backups and monitoring
+- [ ] Configure rate limiting for API endpoints
+- [ ] Set up authentication/authorization if adding write endpoints
+- [ ] Review and update `.gitignore` to ensure no sensitive files are tracked
+- [ ] Use a reverse proxy (nginx, Cloudflare) for additional security layers
+- [ ] Regularly update dependencies for security patches
+- [ ] Monitor logs for suspicious activity
+
+### Security Best Practices
+
+1. **Keep dependencies updated** - Regularly run `npm audit` and update packages
+2. **Principle of least privilege** - Database users should have minimal required permissions
+3. **Defense in depth** - Multiple layers of security (network, application, database)
+4. **Regular audits** - Review code and dependencies for security vulnerabilities
+5. **Secure defaults** - Error messages don't expose sensitive information in production
+
 ## 📝 Notes
 
 - Port 5000 is used by macOS AirPlay, so backend uses port 5001
 - Database username should match your system username (or update `.env`)
 - Seed data uses NYC addresses and neighborhoods for realism
 - ML service requires Python 3.8+ and at least 2 weeks of historical data for SARIMA models
-
-## 🔮 Future Enhancements
-
-- Add more query endpoints (worst offenders, education effectiveness)
-- Date range filtering in frontend
-- Export data functionality
-- User authentication
-- Real-time updates
