@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RoutesRouteImport } from './routes/routes'
 import { Route as OverTimeRouteImport } from './routes/over-time'
+import { Route as MlCapabilitiesRouteImport } from './routes/ml-capabilities'
+import { Route as EmailPreviewRouteImport } from './routes/email-preview'
+import { Route as CampaignPreviewRouteImport } from './routes/campaign-preview'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RoutesRoute = RoutesRouteImport.update({
@@ -23,6 +26,21 @@ const OverTimeRoute = OverTimeRouteImport.update({
   path: '/over-time',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MlCapabilitiesRoute = MlCapabilitiesRouteImport.update({
+  id: '/ml-capabilities',
+  path: '/ml-capabilities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailPreviewRoute = EmailPreviewRouteImport.update({
+  id: '/email-preview',
+  path: '/email-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampaignPreviewRoute = CampaignPreviewRouteImport.update({
+  id: '/campaign-preview',
+  path: '/campaign-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +49,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/campaign-preview': typeof CampaignPreviewRoute
+  '/email-preview': typeof EmailPreviewRoute
+  '/ml-capabilities': typeof MlCapabilitiesRoute
   '/over-time': typeof OverTimeRoute
   '/routes': typeof RoutesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/campaign-preview': typeof CampaignPreviewRoute
+  '/email-preview': typeof EmailPreviewRoute
+  '/ml-capabilities': typeof MlCapabilitiesRoute
   '/over-time': typeof OverTimeRoute
   '/routes': typeof RoutesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/campaign-preview': typeof CampaignPreviewRoute
+  '/email-preview': typeof EmailPreviewRoute
+  '/ml-capabilities': typeof MlCapabilitiesRoute
   '/over-time': typeof OverTimeRoute
   '/routes': typeof RoutesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/over-time' | '/routes'
+  fullPaths:
+    | '/'
+    | '/campaign-preview'
+    | '/email-preview'
+    | '/ml-capabilities'
+    | '/over-time'
+    | '/routes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/over-time' | '/routes'
-  id: '__root__' | '/' | '/over-time' | '/routes'
+  to:
+    | '/'
+    | '/campaign-preview'
+    | '/email-preview'
+    | '/ml-capabilities'
+    | '/over-time'
+    | '/routes'
+  id:
+    | '__root__'
+    | '/'
+    | '/campaign-preview'
+    | '/email-preview'
+    | '/ml-capabilities'
+    | '/over-time'
+    | '/routes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CampaignPreviewRoute: typeof CampaignPreviewRoute
+  EmailPreviewRoute: typeof EmailPreviewRoute
+  MlCapabilitiesRoute: typeof MlCapabilitiesRoute
   OverTimeRoute: typeof OverTimeRoute
   RoutesRoute: typeof RoutesRoute
 }
@@ -75,6 +124,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OverTimeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ml-capabilities': {
+      id: '/ml-capabilities'
+      path: '/ml-capabilities'
+      fullPath: '/ml-capabilities'
+      preLoaderRoute: typeof MlCapabilitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/email-preview': {
+      id: '/email-preview'
+      path: '/email-preview'
+      fullPath: '/email-preview'
+      preLoaderRoute: typeof EmailPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campaign-preview': {
+      id: '/campaign-preview'
+      path: '/campaign-preview'
+      fullPath: '/campaign-preview'
+      preLoaderRoute: typeof CampaignPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +157,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CampaignPreviewRoute: CampaignPreviewRoute,
+  EmailPreviewRoute: EmailPreviewRoute,
+  MlCapabilitiesRoute: MlCapabilitiesRoute,
   OverTimeRoute: OverTimeRoute,
   RoutesRoute: RoutesRoute,
 }
