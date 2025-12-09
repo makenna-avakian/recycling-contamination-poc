@@ -36,23 +36,20 @@ function CampaignPreviewPage() {
       fr: `<p>Cette année, célébrons les fêtes avec moins de déchets et plus de joie ! Vous cherchez toujours le bon cadeau ? Visitez le Merry Memory Maker de Metro Vancouver pour plus de 200 idées de cadeaux à faible déchet, triées par style et prix.</p>
 <p>Réduisez les déchets inutiles en choisissant des cadeaux et des expériences significatifs, en emballant avec des matériaux réutilisables, en choisissant une décoration durable et en prévenant le gaspillage alimentaire.</p>
 <p>Pour maintenir l'esprit de réutilisation, rejoignez-nous au Douglas Park Community Centre le samedi 13 décembre pour un échange de Noël GRATUIT ! Les échanges sont un moyen amusant et facile de donner une seconde vie aux articles—apportez quelque chose dont vous n'avez plus besoin, ou venez simplement parcourir et trouver quelque chose de nouveau pour vous. Tout le monde est le bienvenu !</p>`,
-      en_US: `<p>This year, let's celebrate the Holidays with less waste and more cheer! Still searching for the right gift? Visit Metro Vancouver's Merry Memory Maker for more than 200 low-waste gift ideas sorted by style and price.</p>
-<p>Cut down on unnecessary waste by choosing meaningful gifts and experiences, wrapping with reusable materials, picking long-lasting décor, and preventing food waste.</p>
-<p>To keep the spirit of reuse going, join us at the Douglas Park Community Centre on Sat. Dec.13th for a Holiday-themed FREE Santa Swap! Swaps are a fun, easy way to give items a second life—bring something you no longer need, or simply come browse and find something new-to-you. Everyone's welcome. The swap runs from 10:00am to 1:00pm. See you there!</p>
-<p>Happy Holidays! 🎄</p>`
+      en_US: ``
     },
     short_text_message: {
       es: "Celebre las fiestas con menos desperdicio y más alegría. Únase a nuestro intercambio GRATIS en Douglas Park CC el sábado 13 de diciembre, 10am-1pm. Explore más de 200 ideas de regalos con bajo desperdicio.",
       en: "Celebrate the Holidays with less waste and more cheer! Join our FREE Santa Swap at Douglas Park CC on Sat. Dec 13, 10am–1pm. Bring an item you no longer need and browse for something new-to-you. Still searching for the right gift? Explore Metro Vancouver's Merry Memory Maker for more than 200 low-waste gift ideas. Choose experiences, reusable wrap, lasting décor, and cut food waste. Find out more at creatememoriesnotgarbage.ca",
       fr: "Célébrez les fêtes avec moins de déchets et plus de joie ! Rejoignez notre échange GRATUIT au Douglas Park CC le samedi 13 décembre, 10h-13h. Apportez un article dont vous n'avez plus besoin et parcourez pour trouver quelque chose de nouveau pour vous.",
-      en_US: "Celebrate the Holidays with less waste and more cheer! Join our FREE Santa Swap at Douglas Park CC on Sat. Dec 13, 10am–1pm. Bring an item you no longer need and browse for something new-to-you. Still searching for the right gift? Explore Metro Vancouver's Merry Memory Maker for more than 200 low-waste gift ideas. Choose experiences, reusable wrap, lasting décor, and cut food waste. Find out more at creatememoriesnotgarbage.ca"
+      en_US: ""
     },
     label: "Create memories, not garbage",
     voice_message: {
       es: "Celebre las fiestas con menos desperdicio y más alegría. Únase a nuestro intercambio GRATIS en Douglas Park CC el sábado 13 de diciembre, 10am-1pm.",
       en: "Celebrate the Holidays with less waste and more cheer! Join our FREE Santa Swap at Douglas Park CC on Sat. Dec 13, 10am–1pm. Bring an item you no longer need and browse for something new-to-you. Still searching for the right gift? Explore Metro Vancouver's Merry Memory Maker for more than 200 low-waste gift ideas. Choose experiences, reusable wrap, lasting décor, and cut food waste. Find out more at creatememoriesnotgarbage.ca",
       fr: "Célébrez les fêtes avec moins de déchets et plus de joie ! Rejoignez notre échange GRATUIT au Douglas Park CC le samedi 13 décembre, 10h-13h.",
-      en_US: "Celebrate the Holidays with less waste and more cheer! Join our FREE Santa Swap at Douglas Park CC on Sat. Dec 13, 10am–1pm. Bring an item you no longer need and browse for something new-to-you. Still searching for the right gift? Explore Metro Vancouver's Merry Memory Maker for more than 200 low-waste gift ideas. Choose experiences, reusable wrap, lasting décor, and cut food waste. Find out more at creatememoriesnotgarbage.ca"
+      en_US: ""
     },
     zones: [
       {
@@ -71,7 +68,7 @@ function CampaignPreviewPage() {
       es: "Este año, celebremos las fiestas con menos desperdicio y más alegría. Visita el Merry Memory Maker de Metro Vancouver para más de 200 ideas de regalos con bajo desperdicio.",
       en: "This year, let's celebrate the Holidays with less waste and more cheer! Still searching for the right gift? Visit Metro Vancouver's Merry Memory Maker for more than 200 low-waste gift ideas sorted by style and price. Cut down on unnecessary waste by choosing meaningful gifts and experiences, wrapping with reusable materials, picking long-lasting décor, and preventing food waste. To keep the spirit of reuse going, join us at the Douglas Park Community Centre on Sat. Dec.13th for a Holiday-themed FREE Santa Swap! Swaps are a fun, easy way to give items a second life—bring something you no longer need, or simply come browse and find something new-to-you. Everyone's welcome. The swap runs from 10:00am to 1:00pm. See you there! Happy Holidays! 🎄",
       fr: "Cette année, célébrons les fêtes avec moins de déchets et plus de joie ! Visitez le Merry Memory Maker de Metro Vancouver pour plus de 200 idées de cadeaux à faible déchet.",
-      en_US: "This year, let's celebrate the Holidays with less waste and more cheer! Still searching for the right gift? Visit Metro Vancouver's Merry Memory Maker for more than 200 low-waste gift ideas sorted by style and price. Cut down on unnecessary waste by choosing meaningful gifts and experiences, wrapping with reusable materials, picking long-lasting décor, and preventing food waste. To keep the spirit of reuse going, join us at the Douglas Park Community Centre on Sat. Dec.13th for a Holiday-themed FREE Santa Swap! Swaps are a fun, easy way to give items a second life—bring something you no longer need, or simply come browse and find something new-to-you. Everyone's welcome. The swap runs from 10:00am to 1:00pm. See you there! Happy Holidays! 🎄"
+      en_US: ""
     }
   };
 

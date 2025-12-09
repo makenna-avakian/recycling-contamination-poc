@@ -237,24 +237,6 @@ def generate_predictive_searches():
     """
     searches = []
     
-    # Analyze route trends
-    route_predictions = analyze_route_trends()
-    
-    # Sort by expected increase
-    increasing_routes = [r for r in route_predictions if r['trend'] == 'increasing']
-    increasing_routes.sort(key=lambda x: x['expected_change_pct'], reverse=True)
-    
-    # Add route trend predictions
-    for route in increasing_routes[:3]:
-        searches.append({
-            'title': f"Route {route['route_code']} - Rising Contamination",
-            'description': f"Analysis predicts {route['expected_change_pct']:.1f}% increase. Expected {route['forecast_next_week']} events next week.",
-            'queryType': 'route',
-            'queryParams': {'routeId': route['route_id']},
-            'confidence': min(0.95, 0.6 + abs(route['expected_change_pct']) / 100),
-            'insight': f"Model forecasts increasing contamination for Route {route['route_code']}. Current 7-day average: {route['recent_events']} events. Consider proactive education campaigns."
-        })
-    
     # Analyze category trends
     conn = get_db_connection()
     try:
@@ -285,7 +267,7 @@ def generate_predictive_searches():
                 'queryType': 'category',
                 'queryParams': {'categoryId': top_category['category_id']},
                 'confidence': 0.85,
-                'insight': f"{top_category['description']} is the most common contamination type. Analysis suggests this pattern will continue. Consider targeted public education campaigns."
+                'insight': f"{top_category['description']} is the most common contamination type. Analysis suggests this pattern will continue without intervention. Click here to generate an email to inform the customer about the contamination type."
             })
         
         # Find high severity routes
@@ -333,7 +315,7 @@ def generate_predictive_searches():
                         'endDate': (datetime.now() + timedelta(days=14)).isoformat()
                     },
                     'confidence': min(0.9, 0.7 + abs(overall_forecast['expected_change']) / 200),
-                    'insight': f"Analysis forecasts increasing contamination system-wide. Expected {int(overall_forecast['forecast'][13])} events in 2 weeks (current: {int(overall_ts.iloc[-7:].mean())} per day). Consider system-wide education campaign."
+                    'insight': f"Analysis forecasts increasing contamination system-wide. Expected {int(overall_forecast['forecast'][13])} events in 2 weeks (current: {int(overall_ts.iloc[-7:].mean())} per day). Create a new campaign generated from this analysis here."
                 })
     
     finally:

@@ -53,7 +53,7 @@ export class ContaminationController {
     try {
       const startDate = req.query.startDate 
         ? new Date(req.query.startDate as string)
-        : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // Default: 30 days ago
+        : new Date(Date.now() - 90 * 24 * 60 * 60 * 1000); 
       
       const endDate = req.query.endDate 
         ? new Date(req.query.endDate as string)
