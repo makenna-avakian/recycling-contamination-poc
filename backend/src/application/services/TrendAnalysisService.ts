@@ -76,7 +76,7 @@ export class TrendAnalysisService {
         queryType: 'category',
         queryParams: { categoryId: topCategory.categoryId },
         confidence: 0.85,
-        insight: `${topCategory.description} is the most common contamination type. Consider public education campaigns.`
+        insight: `${topCategory.description} is the most common contamination type. An email can be generated to inform the customer about the contamination type.`
       });
     }
 
