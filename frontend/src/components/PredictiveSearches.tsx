@@ -151,7 +151,7 @@ export function PredictiveSearches() {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden">
+    <div id="ai-insights-section" className="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 px-6 py-5">
         <div className="flex items-center gap-3">
