@@ -1,4 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { aiApi } from '../lib/api';
 
 export const Route = createFileRoute('/email-preview')({
   component: EmailPreviewPage,
@@ -12,23 +15,8 @@ export const Route = createFileRoute('/email-preview')({
 function EmailPreviewPage() {
   const navigate = useNavigate();
   const { contaminationType } = Route.useSearch();
-
-  if (!contaminationType) {
-    return (
-      <div className="bg-white rounded-lg shadow p-6">
-        <p className="text-gray-600">No contamination type specified.</p>
-        <button
-          onClick={() => navigate({ to: '/' })}
-          className="mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-        >
-          Go Back
-        </button>
-      </div>
-    );
-  }
-
-  const subject = `Important: Contamination Education - ${contaminationType}`;
-  const emailBody = `Dear Customer,
+  const [subject, setSubject] = useState(`Important: Contamination Education - ${contaminationType}`);
+  const [emailBody, setEmailBody] = useState(`Dear Customer,
 
 We are reaching out to provide important information about proper recycling practices.
 
@@ -50,7 +38,33 @@ For more information about what can and cannot be recycled, please visit our web
 Thank you for helping us keep our recycling stream clean and effective.
 
 Best regards,
-Recollect Waste Management Team`;
+Recollect Waste Management Team`);
+
+  const generateMutation = useMutation({
+    mutationFn: () => aiApi.generateEmail(contaminationType),
+    onSuccess: (data) => {
+      setSubject(data.subject);
+      setEmailBody(data.body);
+    },
+    onError: (error) => {
+      console.error('Generation error:', error);
+    },
+    retry: false, // Don't retry on failure
+  });
+
+  if (!contaminationType) {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <p className="text-gray-600">No contamination type specified.</p>
+        <button
+          onClick={() => navigate({ to: '/' })}
+          className="mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+        >
+          Go Back
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -115,6 +129,28 @@ Recollect Waste Management Team`;
             </div>
             <div className="flex space-x-3">
               <button
+                onClick={() => generateMutation.mutate()}
+                disabled={generateMutation.isPending}
+                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {generateMutation.isPending ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    Regenerate with AI
+                  </>
+                )}
+              </button>
+              <button
                 onClick={() => {
                   const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
                   window.open(mailtoLink);
@@ -134,6 +170,40 @@ Recollect Waste Management Team`;
               </button>
             </div>
           </div>
+          {generateMutation.isPending && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center gap-3">
+                <svg className="animate-spin h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <div>
+                  <p className="text-sm font-semibold text-blue-900">Generating email with AI...</p>
+                  <p className="text-xs text-blue-700 mt-1">This may take 15-30 seconds. Please wait...</p>
+                </div>
+              </div>
+            </div>
+          )}
+          {generateMutation.isError && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-red-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p className="text-sm font-semibold text-red-900">Generation Failed</p>
+                  <p className="text-sm text-red-800 mt-1">
+                    {generateMutation.error instanceof Error 
+                      ? generateMutation.error.message 
+                      : 'Failed to generate email. Make sure Ollama is running: ollama serve'}
+                  </p>
+                  <p className="text-xs text-red-700 mt-2">
+                    Tip: First generation can take 30-60 seconds. Subsequent generations are faster.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

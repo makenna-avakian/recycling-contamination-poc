@@ -2,8 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { createContaminationRoutes } from './presentation/routes/contaminationRoutes';
+import { createAIRoutes } from './presentation/routes/aiRoutes';
 import { errorHandler } from './presentation/middleware/errorHandler';
 import { contaminationController } from './infrastructure/config/dependencies';
+import { AIGenerationController } from './presentation/controllers/AIGenerationController';
 
 // Load environment variables
 dotenv.config();
@@ -25,6 +27,7 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api/contamination', createContaminationRoutes(contaminationController));
+app.use('/api/ai', createAIRoutes(new AIGenerationController()));
 
 // Error handling middleware (must be last)
 app.use(errorHandler);
