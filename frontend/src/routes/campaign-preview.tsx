@@ -1,5 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { aiApi } from '../lib/api';
 
 export const Route = createFileRoute('/campaign-preview')({
   component: CampaignPreviewPage,
@@ -15,7 +17,7 @@ function CampaignPreviewPage() {
   const endDate = new Date();
   endDate.setDate(endDate.getDate() + 7);
 
-  const campaignJson = {
+  const [campaignJson, setCampaignJson] = useState({
     type: "education",
     is_shared: true,
     subject: {
@@ -70,7 +72,18 @@ function CampaignPreviewPage() {
       fr: "Cette année, célébrons les fêtes avec moins de déchets et plus de joie ! Visitez le Merry Memory Maker de Metro Vancouver pour plus de 200 idées de cadeaux à faible déchet.",
       en_US: ""
     }
-  };
+  });
+
+  const generateMutation = useMutation({
+    mutationFn: () => aiApi.generateCampaign(),
+    onSuccess: (data) => {
+      setCampaignJson(data);
+    },
+    onError: (error) => {
+      console.error('Generation error:', error);
+    },
+    retry: false, // Don't retry on failure
+  });
 
   const handleCopyJson = () => {
     navigator.clipboard.writeText(JSON.stringify(campaignJson, null, 2));
@@ -152,6 +165,28 @@ function CampaignPreviewPage() {
             </div>
             <div className="flex space-x-3">
               <button
+                onClick={() => generateMutation.mutate()}
+                disabled={generateMutation.isPending}
+                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {generateMutation.isPending ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    Generate with AI
+                  </>
+                )}
+              </button>
+              <button
                 onClick={handleCopyJson}
                 className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
               >
@@ -165,6 +200,15 @@ function CampaignPreviewPage() {
               </button>
             </div>
           </div>
+          {generateMutation.isError && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-800">
+                {generateMutation.error instanceof Error 
+                  ? generateMutation.error.message 
+                  : 'Failed to generate campaign. Make sure Ollama is running: ollama serve'}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
